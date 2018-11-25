@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use DB;
 
 class LoginController extends Controller
 {
@@ -15,10 +14,9 @@ class LoginController extends Controller
 
     function isLoggedIn(Request $request)
     {
-        $checkLogin = DB::table('users')->where(['email' => $request->input('user'), 'password' => $request->input('pass')])->get();
-        if (count($checkLogin) > 0) {
+        if (Auth::attempt(['email' => $request->input('user'), 'password' => $request->input('pass')])) {
             return redirect('/dashboard');
-        } else {
+        }else{
             return back();
         }
     }
